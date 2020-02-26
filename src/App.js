@@ -10,12 +10,13 @@ const App = () => (
     <Switch>
             {mainRouter.map(r=>{
                 return <Route 
+                key={r.pathname}
                 path={r.pathname} 
                 component={r.component}
                 />
             })}
             <Redirect exact from="/" to="/home" />
-
+            <Redirect exact from="/home1" to="/home" />
     </Switch>
   </div>
 );

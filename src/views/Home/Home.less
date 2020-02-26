@@ -1,0 +1,107 @@
+@left : 50px;
+.home-slider{
+    height: 200px;
+    img{
+        height: 100%;
+        width: 90%;
+    }
+}
+.home-jingxuan{
+    height : 700px;
+    .home-jingxuan-title{
+        font-size: large;
+        margin: 0 auto;
+        width: 200px;
+        padding: 20px;
+
+    }
+    li.home-jingxuan-item{
+        height: 240px;
+        transition: all 0.3s;
+    }
+    li.home-jingxuan-item-first{
+        height: 480px;
+        transition: all 0.3s;
+        
+    }
+    li{
+        z-index: 1;
+        float: left;
+        margin-right: 18px;
+        transition: all .3s linear 0s;
+        border-radius: 0 0 8px 8px;
+        -webkit-box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+        box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+        margin-bottom: 17px;}
+     li>a {
+            display: block;
+            width: 348px;
+            height: 100%;
+            position: relative;
+        }
+
+    .detail{
+        height: 100px;
+        width: 100%;
+        background-color: #ffffff;
+        color: black;
+        position: absolute;
+        bottom : 0px;
+        transition: all 0.3s;
+        .hide{
+            margin-left: @left;
+            display: none;
+            
+        }
+        .prodcut-name{
+            margin-left: @left;
+        }
+        .summary{
+            margin-left: @left;
+            font-size : 16px;
+            color: #909090;
+        }
+        .s1{
+            margin-left: @left;
+            font-size: 22px;
+            font-family: DIN-Black;
+            font-weight: 900;
+            margin-bottom: -3px;
+            margin-right: 5px;
+            color: #ff5050
+        }
+        .s2{
+            
+            font-size: 16px;
+            color: #ff5050;
+            font-weight: 600;
+        }
+    }
+    .home-jingxuan-item-first:hover,.home-jingxuan-item:hover{
+        .detail{
+            .hide{
+                color: white;
+                
+            }
+            .prodcut-name{
+                color: white;
+            }
+            .summary{
+                color: white;
+            }
+            .s1{
+                color: white;
+            }
+            .s2{
+                color: white;
+            }
+            background-color: green;
+            height: 50%;
+            opacity:0.8;
+            .hide{
+                display: inline-block;
+            }
+        }
+        
+    }
+}
