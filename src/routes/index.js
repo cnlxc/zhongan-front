@@ -14,7 +14,7 @@ export const mainRouter = [{
     pathname : '/404',
     component : NotFound
 },{
-    pathname : '/productlist/:productId',
+    pathname : '/productlist',
     component : ProductList
 },{
     pathname : '/home',
