@@ -4,7 +4,9 @@ import {
     Login,
     NotFound,
     ProductList,
-    Home
+    Home,
+    SignUp,
+    PasswordForget
 } from '../views'
 
 export const mainRouter = [{
@@ -19,8 +21,12 @@ export const mainRouter = [{
 },{
     pathname : '/home',
     component : Home
-},
-
-
+},{
+    pathname : '/signup',
+    component : SignUp
+},{
+    pathname : '/forget_password',
+    component : PasswordForget
+}
 
 ]
