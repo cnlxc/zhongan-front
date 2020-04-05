@@ -21,8 +21,8 @@ class Entity extends Component{
     }
     componentDidMount(){
         getList().then(resp =>{
-            
-            let tempArrayData = resp.data.list
+            console.log(resp)
+            let tempArrayData = resp
             tempArrayData.map((value,index)=>{
                 Object.assign(value,imgUrlTest[index])
             })
@@ -63,16 +63,16 @@ class Entity extends Component{
                     (item,index)=>{
                         return (
                                                     
-                            <li className={index=== 0 ? 'home-jingxuan-item-first' : 'home-jingxuan-item'} key={item.productName} >
-                                   <a onClick={this.goLink.bind(this,item.productId)} style=
+                            <li className={index=== 0 ? 'home-jingxuan-item-first' : 'home-jingxuan-item'} key={item.id} >
+                                   <a onClick={this.goLink.bind(this,item.id)} style=
                                         {{
-                                         backgroundImage : `url(${baseURL_nginx+ item.img})` ,
+                                         backgroundImage : `url(${baseURL_nginx+ item.mainImage})` ,
                                          backgroundSize : '100% 100%',
                                          }}>
                                          <div className='detail'>
-                                            <h2 className='prodcut-name'>{item.productName}</h2>
-                                            <p className='summary'>{item.summary}</p>
-                                            <span className='s1'>{item.lowestPrice}</span><span className='s2'>元起</span>
+                                            <h2 className='prodcut-name'>{item.name}</h2>
+                                            <p className='summary'>{item.subtitle}</p>
+                                            <span className='s1'>{item.price}</span><span className='s2'>元起</span>
                                             <p className='hide'>了解详情</p>
                                          </div>
                                     </a> 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom'
-import { Layout, Menu, Breadcrumb, Tabs } from 'antd';
+import {Link, withRouter} from 'react-router-dom'
+import { Layout, Menu, Breadcrumb, notification } from 'antd';
 import {
   UserOutlined,
   FileOutlined,
@@ -16,6 +16,12 @@ import NotFound from '../NotFound/NotFound';
 import ServerError from '../NotFound/ServerError';
 import {getCurrentUser} from '../../requests'
 import { Head1,Head2,Tail } from '../Frame';
+import Default from './Default';
+import MyOrder from './MyPolicy';
+import GroupOrder from './GroupOrder';
+import ClaimInquiry from './ClaimInquiry';
+import MyDetailInformation from './MyDetailInformation';
+
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
@@ -25,36 +31,61 @@ class Profile extends Component {
         super(props);
         this.state = {
             user: null,
-            isLoading: false
+            isLoading: false,
+            selected : "0"
         }
         this.loadUserProfile = this.loadUserProfile.bind(this);
+        this.profileDisplaySwitch = this.profileDisplaySwitch.bind(this);
+        this.displaySwitchProcesser = this.displaySwitchProcesser.bind(this);
     }
 
-    loadUserProfile(username) {
+    loadUserProfile() {
         this.setState({
             isLoading: true
         });
 
         getCurrentUser().then(resp=>{
+          console.log('zheli')
             console.log(resp)
             this.setState({user : resp,isLoading : false})
+        }).catch(err=>{
+          this.setState({isLoading : false})
+          //notification.open({description:'请先登陆'})
         })
    
     }
       
-    componentDidMount() {
-        const username = this.props.match.params.username;
-        this.loadUserProfile(username);
+
+    profileDisplaySwitch = function({ item, key, keyPath, domEvent }){
+      this.setState({selected : key});
     }
 
-    componentDidUpdate(nextProps) {
-        if(this.props.match.params.username !== nextProps.match.params.username) {
-            this.loadUserProfile(nextProps.match.params.username);
-        }        
+    displaySwitchProcesser(key){
+      switch(key){
+        case "0" : return <Default user={this.state.user}/>
+        case "1" : return <MyOrder user={this.state.user} /> 
+        case "2" : return <GroupOrder user={this.state.user} />
+        case "3" : return <ClaimInquiry user={this.state.user} />
+        case "4" : return <MyDetailInformation user={this.state.user} />
+        default : return <p1>nothing</p1>
+      }
     }
+
+    componentDidMount() {
+        
+        this.loadUserProfile();
+    }
+
+    // componentDidUpdate(nextProps) {
+    //     if(this.props.match.params.username !== nextProps.match.params.username) {
+    //         this.loadUserProfile(nextProps.match.params.username);
+    //     }        
+    // }
 
     render() {
-        if(this.state.isLoading) {
+
+      
+       /* if(this.state.isLoading) {
             return <LoadingIndicator />;
         }
 
@@ -64,11 +95,7 @@ class Profile extends Component {
 
         if(this.state.serverError) {
             return <ServerError />;
-        }
-
-        const tabBarStyle = {
-            textAlign: 'center'
-        };
+        }*/
 
         return (
             <div className="wrap">
@@ -84,10 +111,14 @@ class Profile extends Component {
                     { 
                         this.state.user ? (
                             
-                                <Layout style={{ minHeight: '100vh' }}>
+                                <Layout style={{ minHeight: '100vh' }} >
                                   <Sider trigger={null} >
                                     <div className="logo" />
-                                    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+                                    <Menu theme="dark" defaultSelectedKeys={['0']} mode="inline" onClick={this.profileDisplaySwitch}>
+                                    <Menu.Item key="0">
+                                        <UserOutlined />
+                                        <span>个人中心</span>
+                                      </Menu.Item>
                                       <Menu.Item key="1">
                                         <FileSearchOutlined />
                                         <span>我的订单</span>
@@ -104,39 +135,19 @@ class Profile extends Component {
                                         <UserOutlined />
                                         <span>我的资料</span>
                                       </Menu.Item>
-                                      <Menu.Item key="4">
+                                      <Menu.Item key="5">
                                         <FileSearchOutlined />
                                         <span>我的积分</span>
                                       </Menu.Item>
 
                                     </Menu>
                                   </Sider>
-                                  <Layout className="site-layout">
-                                    <Header className="site-layout-background" style={{ padding: 0 }} >
-                                    <Menu
-                                        theme="dark"
-                                        mode="horizontal"
-                                        defaultSelectedKeys={['2']}
-                                    >
-                                        <Menu.Item key="1">nav 1</Menu.Item>
-                                        <Menu.Item key="2">nav 2</Menu.Item>
-                                        <Menu.Item key="3">nav 3</Menu.Item>
-                                    </Menu>
-                                    </Header>
-                                    <Content style={{ margin: '0 16px' }}>
-                                      <Breadcrumb style={{ margin: '16px 0' }}>
-                                        <Breadcrumb.Item>User</Breadcrumb.Item>
-                                        <Breadcrumb.Item>Bill</Breadcrumb.Item>
-                                      </Breadcrumb>
-                                      <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-                                        Bill is a cat.
-                                      </div>
-                                    </Content>
-                                    
-                                  </Layout>
+                                  
+                                  {this.displaySwitchProcesser(this.state.selected)}                                    
+
                                 </Layout>
                             
-                        ): null               
+                        ):   <div><Link to='/login'>请登陆</Link></div>           
                     }
                 </div>
                 <Tail/>
@@ -144,6 +155,8 @@ class Profile extends Component {
 
         );
     }
+
+
 }
 
-export default Profile;
+export default withRouter(Profile);

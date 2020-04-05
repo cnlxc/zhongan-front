@@ -5,25 +5,25 @@ import {ACCESS_TOKEN} from '../constant'
 
 const isDev = process.env.NODE_ENV === 'development'
 
-const service = axios.create({
-    baseURL : isDev ? 'http://rap2.taobao.org:38080/app/mock/245320/' : 'http://rap2.taobao.org:38080/app/mock/245320'
-})
+// const service = axios.create({
+//     baseURL : isDev ? 'http://rap2.taobao.org:38080/app/mock/245320/' : 'http://rap2.taobao.org:38080/app/mock/245320'
+// })
 
-service.interceptors.request.use((config) => {
-    config.headers = Object.assign({},config.headers,{
-        Authorization : window.localStorage.getItem('authToken')
-    })
-    return config
-})
-service.interceptors.response.use((resp) => {
+// service.interceptors.request.use((config) => {
+//     config.headers = Object.assign({},config.headers,{
+//         Authorization : window.localStorage.getItem('authToken')
+//     })
+//     return config
+// })
+// service.interceptors.response.use((resp) => {
 
-    if(resp.status === 200){
-        return resp.data
-    }else{
-        //异常处理
-        message.error(resp.errMsg)
-    }
-})
+//     if(resp.status === 200){
+//         return resp.data
+//     }else{
+//         //异常处理
+//         message.error(resp.errMsg)
+//     }
+// })
 
 
 ////////////////************************ */
@@ -38,6 +38,7 @@ service_backend.interceptors.request.use((config) => {
 
 service_backend.interceptors.response.use((resp) => {
     if(resp.status === 200){
+        console.log('status' +resp.data.status)
         if(resp.data.status===0){
             //console.log(resp.data.data)
             return !resp.data.data ? resp.data.msg : resp.data.data 
@@ -54,6 +55,9 @@ export const getProductById = (id)=>{
     return service_backend.get('/product/list?categoryId=' + id)
 }
 
+export const getOrderByuserAndState = (userid,state) => {
+    return service_backend.get('')
+}
 //*USER ****************************************************
 export const signup = (formData) =>{
 
@@ -85,9 +89,6 @@ export const checkAnswer = (username,answer,question) =>{
 }
 export const resetPasswordByToken = (username,password,token) =>{
     return service_backend.post('/user/'+ username +'/reset_password_by_token',{password : password,token : token})
-    //.then((resp)=>{
-        //interceptors has processed
-    //})
     .catch( error =>{errProcess(error,"重置密码失败")} );
 }
 
@@ -106,25 +107,14 @@ export const getCurrentUser =  ()=>{
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export const getList = ()=>{
-    return service.get('/cnlxc/jingxuan')
+    return service_backend.get('/product/home_display')
+}
+//付款人是我，也可以给别人买
+export const getOrderByUserId = (userId)=>{
+    return service_backend.get('/order/user_id/' + userId)
+}
+//受保人是我，别人给我买的也没问题
+export const getOrderByinsuredName = (userName)=>{
+    return service_backend.get('/order/my_insurance/user_id/' + userName)
 }

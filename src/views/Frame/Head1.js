@@ -10,21 +10,25 @@ import './index.less'
 const { SubMenu } = Menu;
 
 class Head1 extends React.Component {
-    state = {
-      current: 'mail',
-    };
+    constructor(props){
+      super(props);
+      this.onTitleClick = this.onTitleClick.bind(this)
+      this.handleClick = this.handleClick.bind(this)
+    }
   
     handleClick = e => {
-      // console.log('click ', e);
+       console.log('click ', e);
       // this.setState({
       //   current: e.key,
       // });
       this.props.history.push(e.key)
     };
-  
+    onTitleClick = function({ key })	{
+      this.props.history.push(key)
+    }
     render() {
       return (
-        <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
+        <Menu onClick={this.handleClick}  mode="horizontal">
            
            <Menu.Item key='/home'>
             <span className='slog01' ><img  src={logo_slog01} alt='home' /></span>
@@ -34,12 +38,14 @@ class Head1 extends React.Component {
            </Menu.Item>
  
            <SubMenu
+             key="/account/myAccount"
              title={
                <span className="submenu-title-wrapper">
                  <Icon type="user" />
                  个人中心
                </span>
              }
+             onTitleClick={this.onTitleClick}
            >
                <Menu.Item key="/account/myOrder">我的订单</Menu.Item>
                <Menu.Item key="/account/employeeWelfare">团险保单</Menu.Item>
